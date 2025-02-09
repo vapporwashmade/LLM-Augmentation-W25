@@ -1,4 +1,4 @@
-readme_content = """# 📌 TravelBot: LLM-Based Travel Planning Assistant
+📌 TravelBot: LLM-Based Travel Planning Assistant
 
 TravelBot is an AI-powered planning assistant that helps users find **flights, hotels, and activities** for their travels using **large language models (LLMs)**.
 
