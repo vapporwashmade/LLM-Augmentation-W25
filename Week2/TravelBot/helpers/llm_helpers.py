@@ -30,7 +30,7 @@ def parse_location(location_string: str) -> dict:
     schemas = [
         ResponseSchema(name="city", description="City name, or best guess if not explicit"),
         ResponseSchema(name="state", description="State/Province name if applicable, else null or empty"),
-        #create schemea for country,
+        ResponseSchema(name="country", description="Country name, or most likely country if not explicit")
         ResponseSchema(name="clarifications", description="Any extra info or ambiguities")
     ]
     #https://python.langchain.com/v0.1/docs/modules/model_io/output_parsers/types/structured/
@@ -39,18 +39,53 @@ def parse_location(location_string: str) -> dict:
 
     # TODO: Provide a few-shot list and build your prompt.
     # Something like, add a few more and uncomment
-    """# few_shot_examples = [
-    #   {
+    """ few_shot_examples = [
+       {
             "input": "NYC, United States",
             "output": {
                 "city": "New York",
                 "state": "New York",
                 "country": "United States",
+                "clarifications": "New York City is also called New York, which results in some ambiguity."
+            }
+        },
+        {
+            "input": "San Francisco, United States",
+            "output": {
+                "city": "San Francisco",
+                "state": "California",
+                "country": "United States",
+                "clarifications": "Best place."
+            }
+        },
+        {
+            "input": "Kansas City, United States",
+            "output": {
+                "city": "Kansas City",
+                "state": "Missouri",
+                "country": "United States",
+                "clarifications": "Kansas City is not in Kansas."
+            }
+        },
+        {
+            "input": "Canberra, Australia",
+            "output": {
+                "city": "Canberra",
+                "state": "Australian Capital Territory",
+                "country": "Australia",
                 "clarifications": ""
             }
         },
-    #   ...
-    # ]"""
+        {
+            "input": "New Delhi, India",
+            "output": {
+                "city": "New Delhi",
+                "state": "Delhi",
+                "country": "India",
+                "clarifications": ""
+            }
+        }
+     ]"""
     #Ucomment after few show examples completed
     """example_text = "\n".join([
         f"Input: {ex['input']}\nJSON Output: {json.dumps(ex['output'], ensure_ascii=False)}\n"
@@ -69,10 +104,10 @@ def parse_location(location_string: str) -> dict:
 
     # For now, return a placeholder:
     return {
-        "city": "",
-        "state": "",
-        "country": "",
-        "clarifications": ":"
+        "city": "Ann Arbor",
+        "state": "Michigan",
+        "country": "United States",
+        "clarifications": ""
     }
 
 
@@ -88,10 +123,8 @@ def parse_dates(date_string: str) -> dict:
     """
     # Example placeholder schema:
     schemas = [
-        ResponseSchema(name="start_date", description="ISO date for start, else empty"),
-        ResponseSchema(name="end_date", description="ISO date for end, else empty"),
-        ResponseSchema(name="clarifications", description="Any ambiguities or notes")
-    ]
+
+        
     parser = StructuredOutputParser.from_response_schemas(schemas)
     format_instructions = parser.get_format_instructions()
 
