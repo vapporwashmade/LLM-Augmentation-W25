@@ -32,6 +32,7 @@ parse_hotel_options_schema = {
         "name": "parse_hotel_options",
         "description": "Extract optional hotel parameters: 'adults', 'rooms', and 'price_range'.",
         "parameters": {
+            #"adults":,
         #TODO
             "required": []  # All parameters are optional
         }

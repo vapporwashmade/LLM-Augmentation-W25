@@ -39,7 +39,7 @@ def parse_location(location_string: str) -> dict:
 
     # TODO: Provide a few-shot list and build your prompt.
     # Something like, add a few more and uncomment
-    """ few_shot_examples = [
+    few_shot_examples = [
        {
             "input": "NYC, United States",
             "output": {
@@ -85,22 +85,22 @@ def parse_location(location_string: str) -> dict:
                 "clarifications": ""
             }
         }
-     ]"""
+     ]
     #Ucomment after few show examples completed
-    """example_text = "\n".join([
+    example_text = "\n".join([
         f"Input: {ex['input']}\nJSON Output: {json.dumps(ex['output'], ensure_ascii=False)}\n"
         for ex in few_shot_examples
-    ])"""
+    ])
     #TODO: Finish prompt, include role and specific instructions for recieving and output
-    # prompt = f"""
-    #   ...
-    #   {example_text}
-    #   Now parse this user input: "{location_string}"
-    #   {format_instructions}
-    # """
+    prompt = f"""
+       ...
+       {example_text}
+       Now parse this user input: "{location_string}"
+       {format_instructions}
+    """
 
-    #llm_response = get_llm().predict(prompt)
-    #return dict(parser.parse(llm_response))
+    llm_response = get_llm().predict(prompt)
+    return dict(parser.parse(llm_response))
 
     # For now, return a placeholder:
     return {
@@ -123,19 +123,70 @@ def parse_dates(date_string: str) -> dict:
     """
     # Example placeholder schema:
     schemas = [
-
-        
+        ResponseSchema(name="start_date", description="ISO date for start, else empty"),
+        ResponseSchema(name="end_date", description="ISO date for end, else empty"),
+        ResponseSchema(name="clarifications", description="Any ambiguities or notes")
+    ]
     parser = StructuredOutputParser.from_response_schemas(schemas)
     format_instructions = parser.get_format_instructions()
 
     # TODO: Create few_shot_examples, build prompt, parse output.
-    #few_shot_examples = 
-    #example_text = 
-    #prompt = 
+    few_shot_examples = [
+       {
+            "input": "06/21/2002 - 01/01/2007",
+            "output": {
+                "start-date": "June 21, 2002",
+                "end-date": "January 1, 2007",
+                "clarifications": "Interpreting as MM-DD-YYYY"
+            }
+        },
+        {
+            "input": "Jun 29, 2013 - Feb 21, 2014",
+            "output": {
+                "start-date": "June 29, 2013",
+                "end-date": "February 21, 2014",
+                "clarifications": ""
+            }
+        },
+        {
+            "input": "29 May 2003 - 18 June 2024",
+            "output": {
+                "start-date": "April 29, 2003",
+                "end-date": "June 18, 2024",
+                "clarifications": ""
+            }
+        },
+        {
+            "input": "Aug 12 1990 - 8 Sept 1990",
+            "output": {
+                "start-date": "August 12, 1990",
+                "end-date": "September 8, 1990",
+                "clarifications": ""
+            }
+        },
+        {
+            "input": "Nov 22, 1886 - 29 April, 2001",
+            "output": {
+                "start-date": "November 22, 1886",
+                "end-date": "April 29, 2001",
+                "clarifications": ""
+            }
+        }
+     ]
+    example_text = "\n".join([
+        f"Input: {ex['input']}\nJSON Output: {json.dumps(ex['output'], ensure_ascii=False)}\n"
+        for ex in few_shot_examples
+    ])
+    prompt = f"""
+       ...
+       {example_text}
+       Now parse this user input: "{location_string}"
+       {format_instructions}
+    """
     # Placeholder return:
     return {
-        "start_date": "",
-        "end_date": "",
+        "start_date": "July 14, 2001",
+        "end_date": "April 29, 2003",
         "clarifications": ""
     }
 
